@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>إرسال إلى مجموعة يايا</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+      direction: rtl;
+    }
+    h2 {
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    #status {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #333;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<h2>املأ وأرسل إلى مجموعة يايا</h2>
+
+<input id="i1" placeholder="إنسان">
+<input id="i2" placeholder="حيوان">
+<input id="i3" placeholder="نبات">
+<input id="i4" placeholder="جماد">
+<input id="i5" placeholder="بلاد">
+
+<button onclick="send()">إرسال إلى واتساب</button>
+
+<div id="status"></div>
+
+<script>
+  function send() {
+    const groupLink = "https://chat.whatsapp.com/JLg7wubCjHfBoBK9TTUZhu";
+
+    const inputs = [
+      { label: "إنسان", el: document.getElementById("i1") },
+      { label: "حيوان", el: document.getElementById("i2") },
+      { label: "نبات", el: document.getElementById("i3") },
+      { label: "جماد", el: document.getElementById("i4") },
+      { label: "بلاد", el: document.getElementById("i5") }
+    ];
+
+    let message = "";
+    inputs.forEach(item => {
+      if (item.el.value.trim() !== "") {
+        message += item.label + ": " + item.el.value + "\n";
+      }
+    });
+
+    if (message === "") {
+      alert("يرجى تعبئة خانة واحدة على الأقل");
+      return;
+    }
+
+    navigator.clipboard.writeText(message).then(() => {
+      document.getElementById("status").innerText =
+        "تم النسخ. تم فتح واتساب — الصق وأرسل.";
+
+      // ✅ CLEAR ALL INPUT FIELDS AFTER COPY
+      inputs.forEach(item => item.el.value = "");
+
+    }).catch(() => {
+      document.getElementById("status").innerText =
+        "لم يتم النسخ تلقائيًا. انسخ يدويًا.";
+    });
+
+    window.open(groupLink, "_blank");
+  }
+</script>
+
+</body>
+</html>
